@@ -1,0 +1,39 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'http://oss.sonatype.org/content/repositories/snapshots'
+        }
+    }
+    dependencies {
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.1-SNAPSHOT'
+    }
+}
+
+apply plugin: "kotlin"
+apply plugin: 'application'
+
+mainClassName = "adb.AdbPackage"
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        url 'https://raw.github.com/dkhenry/rethinkjava/mvn-repo'
+    }
+    maven {
+        url "http://repository.jetbrains.com/all"
+    }
+}
+
+dependencies {
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:0.1-SNAPSHOT'
+    compile 'org.mongodb:mongo-java-driver:1.3'
+
+    compile files("${System.env['ANDROID_HOME']}/tools/lib/ddmlib.jar")
+    compile 'com.googlecode.json-simple:json-simple:1.1'
+    compile 'ch.qos.logback:logback-classic:1.1.1'
+    testCompile 'org.spek:spek:0.1-SNAPSHOT'
+}
