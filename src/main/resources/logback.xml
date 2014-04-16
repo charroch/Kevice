@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+  <contextName>ADB</contextName>
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+  </appender>
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${user.dir}/logs/adb.log</file>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+      <FileNamePattern>${user.dir}/logs/jtheque.%i.log.zip</FileNamePattern>
+      <MinIndex>1</MinIndex>
+      <MaxIndex>5</MaxIndex>
+    </rollingPolicy>
+
+    <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+      <MaxFileSize>5MB</MaxFileSize>
+    </triggeringPolicy>
+
+    <layout class="ch.qos.logback.classic.PatternLayout">
+      <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+    </layout>
+  </appender>
+
+  <root level="DEBUG">
+    <appender-ref ref="FILE" />
+  </root>
+</configuration>
