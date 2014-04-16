@@ -65,11 +65,6 @@ class DeviceChangeListener : IDeviceChangeListener {
 
     override fun deviceConnected(device: IDevice?) {
         log?.debug("connected:\t\t" + device?.pp())
-        val whereQuery = BasicDBObject();
-        whereQuery.append("serial", device?.getSerialNumber());
-
-        val cursor = devices?.find(whereQuery);
-        println(cursor?.count().toString() + " " +device?.getSerialNumber())
         devices?.update(BasicDBObject().append(
                 "serial", device?.getSerialNumber()
         ), BasicDBObject().append(
