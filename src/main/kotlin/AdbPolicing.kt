@@ -4,11 +4,8 @@
 
 package adb
 
-import com.android.ddmlib.AndroidDebugBridge
 import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener
 import com.android.ddmlib.IDevice
-import java.io.BufferedReader
-import java.io.InputStreamReader
 import com.mongodb.Mongo
 import com.mongodb.BasicDBObject
 import com.mongodb.DBObject
@@ -17,15 +14,18 @@ import org.json.simple.JSONValue
 import org.slf4j.LoggerFactory
 import kotlin.properties.Delegates
 import com.mongodb.DBCollection
+import com.android.ddmlib.AndroidDebugBridge
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
 fun main(args: Array<String>) {
-    println("Starting adb device policing")
-    AndroidDebugBridge.initIfNeeded(false)
-    AndroidDebugBridge.createBridge()
-    AndroidDebugBridge.addDeviceChangeListener(DeviceChangeListener())
-    println ("press any key to exit")
-    val a = BufferedReader(InputStreamReader(System.`in`));
-    a.readLine()
+        println("Starting adb device policing")
+        AndroidDebugBridge.initIfNeeded(false)
+        AndroidDebugBridge.createBridge()
+        AndroidDebugBridge.addDeviceChangeListener(DeviceChangeListener())
+        println ("press any key to exit")
+        val a = BufferedReader(InputStreamReader(System.`in`));
+        a.readLine()
 }
 
 class DeviceChangeListener : IDeviceChangeListener {

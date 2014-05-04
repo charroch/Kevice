@@ -1,0 +1,8 @@
+{
+    "mongo-persistor" : {
+        "address": "oceanic.mongohq.com",
+        "host": "oceanic.mongohq.com",
+        "port": 10038,
+        "db_name": "adb"
+    }
+}

@@ -7,6 +7,9 @@ buildscript {
     }
     dependencies {
         classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.1-SNAPSHOT'
+        classpath "io.vertx:vertx-core:2.1M5"
+        classpath "io.vertx:vertx-platform:2.1M5"
+        classpath "io.vertx:vertx-hazelcast:2.1M5"
     }
 }
 
@@ -18,6 +21,8 @@ apply plugin: "kotlin"
 apply plugin: 'application'
 
 mainClassName = "adb.AdbPackage"
+group 'com.novoda'
+version '0.0.1-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -38,5 +43,18 @@ dependencies {
     compile files("${System.env['ANDROID_HOME']}/tools/lib/ddmlib.jar")
     compile 'com.googlecode.json-simple:json-simple:1.1'
     compile 'ch.qos.logback:logback-classic:1.1.1'
+    compile "io.vertx:vertx-core:2.1M5"
+    compile "io.vertx:vertx-platform:2.1M5"
+    compile "io.vertx:mod-mongo-persistor:2.1.0"
     testCompile 'org.spek:spek:0.1-SNAPSHOT'
+}
+
+
+task h << {
+}
+
+import org.vertx.java.platform.impl.cli.Starter
+
+task runVertx(description: 'Run main class', dependsOn: 'build') << {
+    Starter.main('run', 'WebserverVerticle', '-cp', sourceSets.main.runtimeClasspath.files.join(File.pathSeparator))
 }
