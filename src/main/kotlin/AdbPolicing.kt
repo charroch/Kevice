@@ -73,6 +73,10 @@ class DeviceChangeListener : IDeviceChangeListener {
     }
 }
 
+fun IDevice.log(): String {
+    return this.pp()
+}
+
 fun IDevice.toJSON(): DBObject? {
     val device = BasicDBObject("serial", this.getSerialNumber()).append("state", this.getState().toString())
     if (this.arePropertiesSet()) {

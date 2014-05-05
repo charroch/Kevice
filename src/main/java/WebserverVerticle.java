@@ -1,6 +1,3 @@
-import com.android.ddmlib.AndroidDebugBridge;
-import com.android.ddmlib.IDevice;
-
 import java.io.File;
 import java.util.regex.Pattern;
 
@@ -34,9 +31,9 @@ public class WebserverVerticle extends Verticle {
             config.putString("password", password);
         }
         config.putBoolean("fake", false);
+
         container.deployModule("io.vertx~mod-mongo-persistor~2.1.0", config,
-                new Handler<AsyncResult<String>>()
-        {
+                new Handler<AsyncResult<String>>() {
                     @Override
                     public void handle(AsyncResult<String> event) {
 
@@ -59,27 +56,6 @@ public class WebserverVerticle extends Verticle {
                 }
         );
 
-        AndroidDebugBridge.initIfNeeded(false);
-        AndroidDebugBridge.createBridge();
-        AndroidDebugBridge.addDeviceChangeListener(new AndroidDebugBridge.IDeviceChangeListener() {
-            @Override
-            public void deviceConnected(IDevice iDevice) {
-                logger.info("iDe");
-                String msg = "{\"received\":\"effe\", \"sender\":\"hello\", \"message\": \"hello" + iDevice.getName() + " \"}";
-                for (Object chatter : vertx.sharedData().getSet("chat.room.devices")) {
-                    eventBus.send((String) chatter, msg);
-                }
-            }
-
-            @Override
-            public void deviceDisconnected(IDevice iDevice) {
-            }
-
-            @Override
-            public void deviceChanged(IDevice iDevice, int i) {
-
-            }
-        });
 
         RouteMatcher httpRouteMatcher = new RouteMatcher().get("/", new Handler<HttpServerRequest>() {
             @Override
@@ -92,7 +68,6 @@ public class WebserverVerticle extends Verticle {
                 request.response().sendFile("web/" + new File(request.path()));
             }
         });
-
 
         String s = "{\"action\": \"get_collections\"}";
 //
@@ -109,9 +84,9 @@ public class WebserverVerticle extends Verticle {
 //    );
         logger.info("should have sent something");
 
+        container.deployVerticle(LocalDeviceBridgeVerticle.class.getSimpleName());
 
-
-            vertx.createHttpServer().requestHandler(httpRouteMatcher).listen(8080, "localhost");
+        vertx.createHttpServer().requestHandler(httpRouteMatcher).listen(8080, "localhost");
         vertx.createHttpServer().websocketHandler(new WebSocketAdb(vertx, logger)).listen(8090);
     }
 }
