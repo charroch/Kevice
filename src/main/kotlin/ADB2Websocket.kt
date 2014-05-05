@@ -14,12 +14,22 @@ import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener
 import com.android.ddmlib.IDevice
 import com.android.ddmlib.AndroidDebugBridge
 import org.vertx.java.core.logging.Logger
+import org.vertx.java.core.json.JsonObject
+import org.vertx.java.core.eventbus.Message
 
 public class WebSocketAdb(val vertx: Vertx, val logger: Logger) : Handler<ServerWebSocket> {
 
     override fun handle(ws: ServerWebSocket?) {
         val eventBus = vertx.eventBus()
+        if (eventBus == null) return;
+        val s = """{
+            "action": "find",
+            "collection": "devices"
+        }"""
 
+        eventBus.send("mongodb", JsonObject(s), Handler<Message<JsonObject>>() { (json) ->
+            println( "hello" + json?.body());
+        })
 
 
         if (ws != null && eventBus != null) {
