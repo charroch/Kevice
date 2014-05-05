@@ -1,6 +1,7 @@
 import java.io.File;
 import java.util.regex.Pattern;
 
+import adb.LocalDeviceBridgeVerticle;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
@@ -84,7 +85,12 @@ public class WebserverVerticle extends Verticle {
 //    );
         logger.info("should have sent something");
 
-        container.deployVerticle(LocalDeviceBridgeVerticle.class.getSimpleName());
+        container.deployVerticle(LocalDeviceBridgeVerticle.class.getName(), new Handler<AsyncResult<String>>() {
+            @Override
+            public void handle(AsyncResult<String> event) {
+                logger.info("is this ok? " + event.cause() + event.result(),event.cause());
+            }
+        });
 
         vertx.createHttpServer().requestHandler(httpRouteMatcher).listen(8080, "localhost");
         vertx.createHttpServer().websocketHandler(new WebSocketAdb(vertx, logger)).listen(8090);

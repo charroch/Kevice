@@ -1,7 +1,3 @@
-/**
- * Created by acsia on 30/04/14.
- */
-
 
 import org.vertx.java.core.Handler
 import org.vertx.java.core.http.ServerWebSocket
@@ -32,7 +28,7 @@ public class WebSocketAdb(val vertx: Vertx, val logger: Logger) : Handler<Server
         })
 
 
-        if (ws != null && eventBus != null) {
+        if (ws != null) {
 
             val chatRoom = "devices"
             val id = ws.textHandlerID() ?: "-1"
@@ -49,7 +45,7 @@ public class WebSocketAdb(val vertx: Vertx, val logger: Logger) : Handler<Server
                     ((rootNode as ObjectNode)).put("received", Date().toString())
                     val jsonOutput = m.writeValueAsString(rootNode)
                     for (chatter in vertx.sharedData()?.getSet<String>("chat.room." + chatRoom)?.iterator()) {
-                        eventBus.send((chatter as String), jsonOutput)
+                        eventBus.send(chatter, jsonOutput)
                     }
                 } catch (e: IOException) {
                     ws.reject()
