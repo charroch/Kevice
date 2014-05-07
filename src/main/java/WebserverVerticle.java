@@ -1,16 +1,15 @@
-import java.io.File;
 import java.util.regex.Pattern;
 
-import adb.LocalDeviceBridgeVerticle;
 import org.vertx.java.core.AsyncResult;
 import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
-import org.vertx.java.core.http.HttpServerRequest;
-import org.vertx.java.core.http.RouteMatcher;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
+
+import adb.LocalDeviceBridgeVerticle;
+import vertx.MyREST;
 
 public class WebserverVerticle extends Verticle {
 
@@ -39,7 +38,7 @@ public class WebserverVerticle extends Verticle {
                     public void handle(AsyncResult<String> event) {
 
                         logger.info(event.result());
-                        String s = "{\"action\": \"get_collections\"}";
+                        String s = "{\"action\": \"find\"}";
 
                         eventBus.sendWithTimeout("mongodb", new JsonObject(s), 5000, new Handler<AsyncResult<Message<JsonObject>>>() {
                                     public void handle(AsyncResult<Message<JsonObject>> result) {
@@ -57,42 +56,10 @@ public class WebserverVerticle extends Verticle {
                 }
         );
 
-
-        RouteMatcher httpRouteMatcher = new RouteMatcher().get("/", new Handler<HttpServerRequest>() {
-            @Override
-            public void handle(final HttpServerRequest request) {
-                request.response().sendFile("web/chat.html");
-            }
-        }).get(".*\\.(css|js)$", new Handler<HttpServerRequest>() {
-            @Override
-            public void handle(final HttpServerRequest request) {
-                request.response().sendFile("web/" + new File(request.path()));
-            }
-        });
-
-        String s = "{\"action\": \"get_collections\"}";
-//
-//            eventBus.sendWithTimeout("mongodb", s, 1000, new Handler<AsyncResult<Message<String>>>() {
-//                        public void handle(AsyncResult<Message<String>> result) {
-//                            if (result.succeeded()) {
-//                                System.out.println("I received a reply " + result.result().body());
-//                            } else {
-//
-//                                System.err.println("No reply was received before the 1 second timeout!");
-//                            }
-//                        }
-//            }
-//    );
-        logger.info("should have sent something");
-
-        container.deployVerticle(LocalDeviceBridgeVerticle.class.getName(), new Handler<AsyncResult<String>>() {
-            @Override
-            public void handle(AsyncResult<String> event) {
-                logger.info("is this ok? " + event.cause() + event.result(),event.cause());
-            }
-        });
-
-        vertx.createHttpServer().requestHandler(httpRouteMatcher).listen(8080, "localhost");
+        container.deployWorkerVerticle(LocalDeviceBridgeVerticle.class.getName(), null, 1, false);
+        container.deployVerticle(WebVerticle.class.getName());
+        container.deployVerticle(DeviceWebVerticle.class.getName());
+        container.deployVerticle(MyREST.class.getName());
         vertx.createHttpServer().websocketHandler(new WebSocketAdb(vertx, logger)).listen(8090);
     }
 }

@@ -13,7 +13,8 @@ public class LocalDeviceBridgeVerticle : Verticle(), IDeviceChangeListener {
 
     override fun deviceConnected(device: IDevice?) {
         if (device != null && vertx != null) {
-            container?.logger()?.info(device.log())
+            container?.logger()?.info(device?.log())
+            container?.logger()?.debug(device?.log())
             vertx?.eventBus()?.publish(address(), device.asJsonObject())
         }
     }
