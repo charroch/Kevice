@@ -10,12 +10,58 @@ import org.vertx.java.core.file.AsyncFile
 import org.vertx.java.core.AsyncResult
 import org.vertx.java.core.streams.Pump
 
+trait DeviceVerticle : WithDevice, Verticle {
+
+}
+
+trait Result
+public class Success<T>(val r: T) : Result
+public class Failure() : Result
+
 public abstract class Vert() : Verticle() {
 
     private val routes = RouteMatcher()
 
     fun get(route: String, routeHandler: (HttpServerRequest) -> Unit) {
         routes.get(route, Handler<HttpServerRequest>() { req -> routeHandler(req!!) })
+    }
+
+    fun <T> AsyncResult<T>.onSuccess(f: (T) -> Unit) {
+        if (this.succeeded()) {
+            f(this.result()!!)
+        }
+    }
+
+    class B(val request: HttpServerRequest, val file: File, val r: (Result) -> Unit) : AsyncResultHandler<Void> {
+        override fun handle(ar: AsyncResult<Void>?) {
+            if (ar?.succeeded() as Boolean) {
+                request?.response()?.end();
+                r(Success(file))
+            } else {
+                ar?.cause()?.printStackTrace(System.err);
+            }
+        }
+    }
+
+    fun HttpServerRequest.save(file: File, r: (Result) -> Unit) {
+        this.pause()
+
+
+
+
+        class A(val request: HttpServerRequest) : AsyncResultHandler<AsyncFile> {
+            override fun handle(a: AsyncResult<AsyncFile>?) {
+                a!!.onSuccess { f ->
+                    val pump = Pump.createPump(request, f)
+                    request?.endHandler {
+                        f.close(B(request, file, r))
+                    }
+                    pump?.start()
+                    request?.resume()
+                }
+            }
+        }
+        vertx?.fileSystem()?.open(file.canonicalPath, A(this))
     }
 
     fun put(route: String, routeHandler: (HttpServerRequest) -> Unit) {
@@ -28,6 +74,11 @@ public abstract class Vert() : Verticle() {
 }
 
 class MyREST : Vert() {
+
+    //    override fun serial(): String {
+    //        throw UnsupportedOperationException()
+    //    }
+
     {
         get("/hello") { request ->
             request.response()?.headers()?.set("Content-Type", "text/plain");
@@ -42,36 +93,17 @@ class MyREST : Vert() {
             request?.response()?.write("web/devices.html")
         }
 
+
+
         put("/device/:serial") { request ->
             val serial = request.params()?.get("serial") ?: "unknonwn"
-            apkUploadHandler(File("/tmp/" + serial + ".apk"), request)
-        }
-    }
-
-    class A(val request: HttpServerRequest) : AsyncResultHandler<AsyncFile> {
-        override fun handle(a: AsyncResult<AsyncFile>?) {
-            val result = a!!
-            if (result.succeeded()) {
-                val file = result.result()
-                val pump = Pump.createPump(request, file)
-                request?.endHandler { asyncResult ->
-                    file?.close(AsyncResultHandler<Void>() { ar ->
-                        if (ar?.succeeded() as Boolean) {
-                            request?.response()?.end();
-                        } else {
-                            ar?.cause()?.printStackTrace(System.err);
-                        }
-                    })
+            request.save(File("/tmp/" + serial + ".apk")) {
+                when(it) {
+                    is Success<*> -> println(it.r)
+                    is Failure -> println("failure")
                 }
-                pump?.start()
-                request?.resume()
             }
+            println("Look ma I am asynchronous")
         }
-    }
-
-
-    fun apkUploadHandler(file: File, request: HttpServerRequest) {
-        request?.pause()
-        vertx?.fileSystem()?.open(file.canonicalPath, A(request))
     }
 }

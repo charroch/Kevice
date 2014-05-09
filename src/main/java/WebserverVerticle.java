@@ -57,8 +57,6 @@ public class WebserverVerticle extends Verticle {
         );
 
         container.deployWorkerVerticle(LocalDeviceBridgeVerticle.class.getName(), null, 1, false);
-        container.deployVerticle(WebVerticle.class.getName());
-        container.deployVerticle(DeviceWebVerticle.class.getName());
         container.deployVerticle(MyREST.class.getName());
         vertx.createHttpServer().websocketHandler(new WebSocketAdb(vertx, logger)).listen(8090);
     }
