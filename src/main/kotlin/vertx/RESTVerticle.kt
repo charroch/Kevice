@@ -45,10 +45,6 @@ public abstract class Vert() : Verticle() {
 
     fun HttpServerRequest.save(file: File, r: (Result) -> Unit) {
         this.pause()
-
-
-
-
         class A(val request: HttpServerRequest) : AsyncResultHandler<AsyncFile> {
             override fun handle(a: AsyncResult<AsyncFile>?) {
                 a!!.onSuccess { f ->
