@@ -9,22 +9,38 @@ import org.vertx.java.core.AsyncResultHandler
 import org.vertx.java.core.file.AsyncFile
 import org.vertx.java.core.AsyncResult
 import org.vertx.java.core.streams.Pump
+import com.android.ddmlib.IDevice
 
-trait DeviceVerticle : WithDevice, Verticle {
+public trait RESTx {
 
+    val routes: RouteMatcher
+
+    fun get(route: String, routeHandler: (HttpServerRequest) -> Unit) {
+        routes.get(route, Handler<HttpServerRequest>() { req -> routeHandler(req!!) })
+    }
+
+    fun put(route: String, routeHandler: (HttpServerRequest) -> Unit) {
+        routes.put(route, Handler<HttpServerRequest>() { req -> routeHandler(req!!) })
+    }
+
+    fun post(route: String, routeHandler: (HttpServerRequest) -> Unit) {
+        routes.post(route) {
+            routeHandler(it!!)
+        }
+    }
 }
+
+trait DeviceVerticle : RESTx, WithDevice, Verticle
 
 trait Result
 public class Success<T>(val r: T) : Result
 public class Failure() : Result
 
-public abstract class Vert() : Verticle() {
+trait Vert : DeviceVerticle,  Verticle {
 
-    private val routes = RouteMatcher()
-
-    fun get(route: String, routeHandler: (HttpServerRequest) -> Unit) {
-        routes.get(route, Handler<HttpServerRequest>() { req -> routeHandler(req!!) })
-    }
+    /**
+     * fun get(route:String, routeHandler(HttpServerRequest, IDevice) -> Unit) {}
+     */
 
     fun <T> AsyncResult<T>.onSuccess(f: (T) -> Unit) {
         if (this.succeeded()) {
@@ -60,20 +76,13 @@ public abstract class Vert() : Verticle() {
         vertx?.fileSystem()?.open(file.canonicalPath, A(this))
     }
 
-    fun put(route: String, routeHandler: (HttpServerRequest) -> Unit) {
-        routes.put(route, Handler<HttpServerRequest>() { req -> routeHandler(req!!) })
-    }
 
-    override fun start() {
-        vertx?.createHttpServer()?.requestHandler(routes)?.listen(8081, "localhost");
-    }
+
 }
 
-class MyREST : Vert() {
+class MyREST : Vert,  Verticle() {
 
-    //    override fun serial(): String {
-    //        throw UnsupportedOperationException()
-    //    }
+    override val routes: RouteMatcher = RouteMatcher();
 
     {
         get("/hello") { request ->
@@ -89,9 +98,22 @@ class MyREST : Vert() {
             request?.response()?.write("web/devices.html")
         }
 
+        get2("/hello3") { request ->
+            request?.response()?.write("web/devices.html")
+        }
 
+        fun RESTx.get(path: String, m: (HttpServerRequest, String) -> Unit) {
+            this.get(path) { request ->
+                m(request, "hello")
+            }
+        }
 
-        put("/device/:serial") { request ->
+        get("/tete") { request, device ->
+            request.response()?.headers()?.set("Content-Type", "text/plain");
+            request.response()?.end("Hello World you are reading" + device);
+        }
+
+        put("/device/:serial") {(request, device) ->
             val serial = request.params()?.get("serial") ?: "unknonwn"
             request.save(File("/tmp/" + serial + ".apk")) {
                 when(it) {
@@ -99,7 +121,12 @@ class MyREST : Vert() {
                     is Failure -> println("failure")
                 }
             }
+
             println("Look ma I am asynchronous")
         }
+    }
+
+    override fun start() {
+        vertx?.createHttpServer()?.requestHandler(routes)?.listen(8081, "localhost");
     }
 }

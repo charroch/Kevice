@@ -45,7 +45,6 @@ public class WebserverVerticle extends Verticle {
                                         if (result.succeeded()) {
                                             System.out.println("I received a reply " + result.result().body());
                                         } else {
-
                                             System.err.println("No reply was received before the 1 second timeout!");
                                         }
                                     }
@@ -57,7 +56,13 @@ public class WebserverVerticle extends Verticle {
         );
 
         container.deployWorkerVerticle(LocalDeviceBridgeVerticle.class.getName(), null, 1, false);
-        container.deployVerticle(MyREST.class.getName());
         vertx.createHttpServer().websocketHandler(new WebSocketAdb(vertx, logger)).listen(8090);
+        container.deployVerticle(MyREST.class.getName(), new Handler<AsyncResult<String>>() {
+            @Override
+            public void handle(AsyncResult<String> event) {
+
+                System.err.println("An event" + event.result());
+            }
+        });
     }
 }
