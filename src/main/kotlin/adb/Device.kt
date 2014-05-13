@@ -1,12 +1,33 @@
 package adb
 
 import com.android.ddmlib.IDevice
-import com.mongodb.DBObject
-import com.mongodb.BasicDBObject
 import org.json.simple.JSONObject
 import org.json.simple.JSONValue
 import org.vertx.java.core.json.JsonObject
+import java.io.File
+import org.vertx.java.core.AsyncResult
 
+public class Device(device: IDevice) : IDevice by device {
+    fun install(apk: File): AsyncResult<Void> {
+        class InstallPackageAsync : AsyncResult<Void> {
+            var t: Throwable? = null;
+            var succeeded = false
+            {
+                try {
+                    this@Device.installPackage(apk.canonicalPath, true)
+                    succeeded = true
+                } catch(e: Exception) {
+                    t = e;
+                }
+            }
+            override fun cause(): Throwable? = t
+            override fun succeeded(): Boolean = succeeded
+            override fun failed(): Boolean = !succeeded()
+            override fun result(): Void? = Void.TYPE.newInstance()
+        }
+        return InstallPackageAsync()
+    }
+}
 
 fun IDevice.log(): String {
     return this.pp()

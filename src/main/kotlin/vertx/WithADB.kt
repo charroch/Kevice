@@ -2,6 +2,7 @@ package vertx
 
 import com.android.ddmlib.AndroidDebugBridge
 import com.android.ddmlib.IDevice
+import adb.Device
 
 public trait  WithADB {
 
@@ -10,11 +11,11 @@ public trait  WithADB {
         return AndroidDebugBridge.createBridge()!!
     }
 
-    fun devices(): List<IDevice> {
-        return adb().getDevices()!!.toList()
+    fun devices(): List<Device> {
+        return adb().getDevices()!!.toList().map { Device(it) }
     }
 
-    fun device(serial: String): IDevice {
+    fun device(serial: String): Device {
         return devices().first { d -> d.getSerialNumber() == serial }
     }
 }

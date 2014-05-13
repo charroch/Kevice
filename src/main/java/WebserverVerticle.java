@@ -9,7 +9,7 @@ import org.vertx.java.core.logging.Logger;
 import org.vertx.java.platform.Verticle;
 
 import adb.LocalDeviceBridgeVerticle;
-import vertx.MyREST;
+import vertx.DeviceVerticle;
 
 public class WebserverVerticle extends Verticle {
 
@@ -57,11 +57,11 @@ public class WebserverVerticle extends Verticle {
 
         container.deployWorkerVerticle(LocalDeviceBridgeVerticle.class.getName(), null, 1, false);
         vertx.createHttpServer().websocketHandler(new WebSocketAdb(vertx, logger)).listen(8090);
-        container.deployVerticle(MyREST.class.getName(), new Handler<AsyncResult<String>>() {
+        container.deployVerticle(DeviceVerticle.class.getName(), new Handler<AsyncResult<String>>() {
             @Override
             public void handle(AsyncResult<String> event) {
 
-                System.err.println("An event" + event.result());
+                System.err.println("An event " + event.result() + event.cause());
             }
         });
     }

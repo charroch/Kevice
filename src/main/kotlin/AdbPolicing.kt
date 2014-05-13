@@ -46,7 +46,6 @@ class DeviceChangeListener : IDeviceChangeListener {
 
     override fun deviceDisconnected(device: IDevice?) {
         log?.debug("disconnected:\t\t" + device?.pp())
-        val n = BasicDBObject("state", device?.getState().toString())
         devices?.update(BasicDBObject().append(
                 "serial", device?.getSerialNumber()
         ), BasicDBObject().append(
