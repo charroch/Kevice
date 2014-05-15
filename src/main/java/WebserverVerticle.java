@@ -39,7 +39,6 @@ public class WebserverVerticle extends Verticle {
 
                         logger.info(event.result());
                         String s = "{\"action\": \"find\"}";
-
                         eventBus.sendWithTimeout("mongodb", new JsonObject(s), 5000, new Handler<AsyncResult<Message<JsonObject>>>() {
                                     public void handle(AsyncResult<Message<JsonObject>> result) {
                                         if (result.succeeded()) {
@@ -57,12 +56,6 @@ public class WebserverVerticle extends Verticle {
 
         container.deployWorkerVerticle(LocalDeviceBridgeVerticle.class.getName(), null, 1, false);
         vertx.createHttpServer().websocketHandler(new WebSocketAdb(vertx, logger)).listen(8090);
-        container.deployVerticle(DeviceVerticle.class.getName(), new Handler<AsyncResult<String>>() {
-            @Override
-            public void handle(AsyncResult<String> event) {
-
-                System.err.println("An event " + event.result() + event.cause());
-            }
-        });
+        container.deployVerticle(DeviceVerticle.class.getName());
     }
 }

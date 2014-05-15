@@ -8,14 +8,15 @@ import java.io.File
 import org.vertx.java.core.AsyncResult
 
 public class Device(device: IDevice) : IDevice by device {
-    fun install(apk: File): AsyncResult<Void> {
-        class InstallPackageAsync : AsyncResult<Void> {
+    fun install(apk: File): AsyncResult<Device> {
+        class InstallPackageAsync : AsyncResult<Device> {
             var t: Throwable? = null;
             var succeeded = false
             {
                 try {
-                    this@Device.installPackage(apk.canonicalPath, true)
-                    succeeded = true
+                    if (this@Device.installPackage(apk.canonicalPath, true) == null) {
+                        succeeded = true
+                    }
                 } catch(e: Exception) {
                     t = e;
                 }
@@ -23,9 +24,13 @@ public class Device(device: IDevice) : IDevice by device {
             override fun cause(): Throwable? = t
             override fun succeeded(): Boolean = succeeded
             override fun failed(): Boolean = !succeeded()
-            override fun result(): Void? = Void.TYPE.newInstance()
+            override fun result(): Device = this@Device
         }
         return InstallPackageAsync()
+    }
+
+    fun asJsonObject(): JsonObject {
+        return JsonObject(this.toJSON().toJSONString())
     }
 }
 

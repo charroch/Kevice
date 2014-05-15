@@ -1,13 +1,9 @@
-/**
- * Created by acsia on 05/05/14.
- */
-
-package adb;
+package adb
 
 import org.vertx.java.platform.Verticle
-import com.android.ddmlib.AndroidDebugBridge
 import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener
 import com.android.ddmlib.IDevice
+import com.android.ddmlib.AndroidDebugBridge
 
 public class LocalDeviceBridgeVerticle : Verticle(), IDeviceChangeListener {
 

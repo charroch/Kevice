@@ -47,5 +47,5 @@ dependencies {
 
 mainClassName = "org.vertx.java.platform.impl.cli.Starter"
 run {
-    args += ['run', 'WebserverVerticle', '-cp', sourceSets.main.runtimeClasspath.files.join(File.pathSeparator)]
+    args += ['run', 'VerticleOfVerticles', '-cp', sourceSets.main.runtimeClasspath.files.join(File.pathSeparator)]
 }

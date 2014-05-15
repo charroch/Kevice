@@ -36,6 +36,12 @@ public trait Async {
             f(this.result()!!)
         }
     }
+
+    fun <T> AsyncResult<T>.onFailure(f: (Throwable) -> Unit) {
+        if (!this.succeeded()) {
+            f(this.cause()!!)
+        }
+    }
 }
 
 public trait Upload : Verticle, Async {
