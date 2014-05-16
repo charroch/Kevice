@@ -55,13 +55,13 @@ public fun IDevice.toJSON(): JSONObject {
 fun IDevice.pp(): String {
     val buf = StringBuffer(this.getSerialNumber() as String).append('\t');
     if (this.arePropertiesSet()) {
-        buf.append(this.getProperty("ro.product.brand"))
-                .append('\t')
-                .append(this.getProperty("ro.build.characteristics"))
-                .append('\t')
-                .append(this.getProperty("ro.build.version.release"))
-                .append('\t')
-                .append(this.getProperty("ro.build.version.sdk"))
+        buf?.append(this.getProperty("ro.product.brand"))
+                ?.append('\t')
+                ?.append(this.getProperty("ro.build.characteristics"))
+                ?.append('\t')
+                ?.append(this.getProperty("ro.build.version.release"))
+                ?.append('\t')
+                ?.append(this.getProperty("ro.build.version.sdk"))
     }
     return buf.toString()
 }

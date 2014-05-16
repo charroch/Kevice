@@ -1,6 +1,5 @@
 package vertx
 
-import org.vertx.java.core.http.HttpServerRequest
 import java.io.File
 import future.Success
 import future.Failure
@@ -9,57 +8,44 @@ import org.vertx.java.core.json.JsonObject
 
 public class DeviceVerticle : RESTx(), WithDevice {
     {
+
+
         get("/") {
             it?.response()?.sendFile("web/devices.html");
         }
 
         get("/devices") { request ->
-            val json = JsonArray()
-            val response = devices().fold(json) {(j, device) ->
+            val json = devices().fold(JsonArray()) {(j, device) ->
                 j.addObject(device.asJsonObject())
                 j
             }
-
             container?.logger()?.info("will fetch from MongoDB")
-
-            val s = """{"action": "find", "collection": "devices"}"""
+            val s = """
+            {
+                "action": "find",
+                "collection": "devices",
+                "matcher": {
+                    "state": "OFFLINE"
+                }
+            }
+            """
             vertx?.eventBus()?.sendWithTimeout<JsonObject>("mongodb", JsonObject(s), 5000) {
                 if (it?.succeeded()!!) {
-                    val jso:JsonObject = it!!.result()!!.body() as JsonObject
-                    val devices = jso.getArray("results")!!
-                    json.forEach { d -> devices.addObject(d as JsonObject) }
-                    container?.logger()?.info("I received a reply " + devices.size() + " " + json.size())
-
+                    val devicesFromMongo: JsonObject = it!!.result()!!.body() as JsonObject
+                    val devices: JsonArray = devicesFromMongo.getArray("results")!!
+                    json.forEach { d ->
+                        val j = d as JsonObject;
+                        if (!j.getString("serial")?.contains("?")!!) {
+                            devices.addObject(d as JsonObject)
+                        }
+                    }
                     request!!.response()?.headers()?.set("Content-Type", "application/json");
                     request!!.response()?.headers()?.set("Access-Control-Allow-Origin", "*");
                     request.response()?.end(devices.toString());
                 } else {
-                    container?.logger()?.info("No reply was received before the 1 second timeout!")
+                    container?.logger()?.info("No reply was received before the 5 second timeout!")
                 }
             }
-//
-//            request!!.response()?.headers()?.set("Content-Type", "application/json");
-//            request!!.response()?.headers()?.set("Access-Control-Allow-Origin", "*");
-//            request.response()?.end(response.toString());
-        }
-
-        get("/hello2") { request ->
-            request?.response()?.write("web/devices.html")
-        }
-
-        get("/hello3") { request ->
-            request?.response()?.write("web/devices.html")
-        }
-
-        fun RESTx.get(path: String, m: (HttpServerRequest, String) -> Unit) {
-            this.get(path) { request ->
-                m(request!!, "hello")
-            }
-        }
-
-        get("/tete") { request, device ->
-            request.response()?.headers()?.set("Content-Type", "text/plain");
-            request.response()?.end("Hello World you are reading" + device);
         }
 
         put("/device/:serial") {(request, device) ->
