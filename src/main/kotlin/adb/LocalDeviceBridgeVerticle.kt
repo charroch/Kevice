@@ -32,6 +32,7 @@ public class LocalDeviceBridgeVerticle : Verticle(), IDeviceChangeListener {
         AndroidDebugBridge.initIfNeeded(true)
         AndroidDebugBridge.createBridge()
         AndroidDebugBridge.addDeviceChangeListener(this)
+        AndroidDebugBridge.addDeviceChangeListener(DeviceChangeListener())
     }
 
     fun address(): String {

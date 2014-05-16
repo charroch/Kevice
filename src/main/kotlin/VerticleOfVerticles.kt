@@ -20,7 +20,6 @@ public class VerticleOfVerticles : Verticle() {
         }
         config.putBoolean("fake", false)
         container?.deployModule("io.vertx~mod-mongo-persistor~2.1.0", config)
-
         container?.logger()?.info("Starting all verticles")
         VerticleManager.allVerticles.forEach {
             when (it.vtype) {

@@ -8,27 +8,11 @@ import com.android.ddmlib.AndroidDebugBridge.IDeviceChangeListener
 import com.android.ddmlib.IDevice
 import com.mongodb.Mongo
 import com.mongodb.BasicDBObject
-import com.mongodb.DBObject
-import org.json.simple.JSONObject
-import org.json.simple.JSONValue
 import org.slf4j.LoggerFactory
 import kotlin.properties.Delegates
 import com.mongodb.DBCollection
-import com.android.ddmlib.AndroidDebugBridge
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
-fun main(args: Array<String>) {
-        println("Starting adb device policing")
-        AndroidDebugBridge.initIfNeeded(false)
-        AndroidDebugBridge.createBridge()
-        AndroidDebugBridge.addDeviceChangeListener(DeviceChangeListener())
-        println ("press any key to exit")
-        val a = BufferedReader(InputStreamReader(System.`in`));
-        a.readLine()
-}
-
-class DeviceChangeListener : IDeviceChangeListener {
+public class DeviceChangeListener : IDeviceChangeListener {
 
     val log = LoggerFactory.getLogger("DeviceChangeListener");
 
@@ -45,6 +29,9 @@ class DeviceChangeListener : IDeviceChangeListener {
     }
 
     override fun deviceDisconnected(device: IDevice?) {
+        if (device!!.getSerialNumber()!!.contains("?")) {
+            return;
+        }
         log?.debug("disconnected:\t\t" + device?.pp())
         devices?.update(BasicDBObject().append(
                 "serial", device?.getSerialNumber()
@@ -54,6 +41,9 @@ class DeviceChangeListener : IDeviceChangeListener {
     }
 
     override fun deviceChanged(device: IDevice?, p1: Int) {
+        if (device!!.getSerialNumber()!!.contains("?")) {
+            return;
+        }
         log?.debug("changed:\t\t" + device?.pp())
         devices?.update(BasicDBObject().append(
                 "serial", device?.getSerialNumber()
@@ -63,6 +53,9 @@ class DeviceChangeListener : IDeviceChangeListener {
     }
 
     override fun deviceConnected(device: IDevice?) {
+        if (device!!.getSerialNumber()!!.contains("?")) {
+            return;
+        }
         log?.debug("connected:\t\t" + device?.pp())
         devices?.update(BasicDBObject().append(
                 "serial", device?.getSerialNumber()
