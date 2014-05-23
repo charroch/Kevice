@@ -10,8 +10,8 @@ public class DeviceVerticle : RESTx(), WithDevice {
     {
 
 
-        get("/") {
-            it?.response()?.sendFile("web/devices.html");
+        get("/") { request ->
+            request?.response()?.sendFile("web/devices.html");
         }
 
         get("/devices") { request ->
@@ -66,6 +66,17 @@ public class DeviceVerticle : RESTx(), WithDevice {
             }
             println("Look ma I am asynchronous")
         }
+
+        get("/device/:serial/apilevel") {(request, device) ->
+            json {
+                "sdk" to (device.getProperty("ro.build.version.sdk") ?: 0)
+                "hh" to "jf"
+            }
+        }
+    }
+
+    fun json(f: Map<Any, Any>.() -> Any) {
+        val json = JsonObject()
     }
 
     override fun start() {

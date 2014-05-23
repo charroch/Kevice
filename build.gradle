@@ -6,7 +6,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.1-SNAPSHOT'
+        classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:0.7.270'
     }
 }
 
@@ -33,11 +33,12 @@ repositories {
     }
     maven {
         url "http://repository.jetbrains.com/all"
+
     }
 }
 
 dependencies {
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:0.1-SNAPSHOT'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:0.7.270'
     compile 'org.mongodb:mongo-java-driver:2.12.0-rc3'
     compile files("${System.env['ANDROID_HOME']}/tools/lib/ddmlib.jar")
     compile 'com.googlecode.json-simple:json-simple:1.1'
@@ -45,7 +46,9 @@ dependencies {
     compile "io.vertx:vertx-core:2.1M5"
     compile "io.vertx:vertx-platform:2.1M5"
     compile "io.vertx:mod-mongo-persistor:2.1.0"
-    testCompile 'org.spek:spek:0.1-SNAPSHOT'
+
+
+    testCompile 'org.spek:spek:0.1.121'
 }
 
 mainClassName = "org.vertx.java.platform.impl.cli.Starter"

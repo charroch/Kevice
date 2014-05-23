@@ -21,4 +21,15 @@ public trait WithDevice : WithADB, RESTx, RouteHelper {
         }
     }
 
+    fun get(route: String, routeHandler: (HttpServerRequest, Device) -> Unit) {
+        get(route) { req ->
+            val serial = req?.params()?.get("serial") ?: "unknown"
+            try {
+                routeHandler(req!!, device(serial))
+            } catch(e: IllegalArgumentException) {
+                req?.response()?.setStatusCode(404)?.setStatusMessage("device %s not found" format serial)?.end()
+            }
+        }
+    }
+
 }
