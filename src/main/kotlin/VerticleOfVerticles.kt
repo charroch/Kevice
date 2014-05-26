@@ -14,10 +14,9 @@ public class VerticleOfVerticles : Verticle() {
         config.putNumber("port", 10038)
         val username = "hal9000"
         val password = "monn1v1da"
-        if (username != null) {
-            config.putString("username", username)
-            config.putString("password", password)
-        }
+        config.putString("username", username)
+        config.putString("password", password)
+
         config.putBoolean("fake", false)
         container?.deployModule("io.vertx~mod-mongo-persistor~2.1.0", config)
         container?.logger()?.info("Starting all verticles")

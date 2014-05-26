@@ -1,0 +1,10 @@
+{
+    "mongo-persistor" : {
+        "address": "mongodb",
+        "host": "oceanic.mongohq.com",
+        "port": 10038,
+        "db_name": "adb",
+        "username": "hal9000",
+        "password": "monn1v1da"
+    }
+}

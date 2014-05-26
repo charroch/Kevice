@@ -32,11 +32,11 @@ public class DeviceChangeListener : IDeviceChangeListener {
         if (device!!.getSerialNumber()!!.contains("?")) {
             return;
         }
-        log?.debug("disconnected:\t\t" + device?.pp())
+        log?.debug("disconnected:\t\t" + device.pp())
         devices?.update(BasicDBObject().append(
-                "serial", device?.getSerialNumber()
+                "serial", device.getSerialNumber()
         ), BasicDBObject().append(
-                "\$set", device?.toJSON()
+                "\$set", device.toJSON()
         ), true, true);
     }
 
@@ -44,11 +44,11 @@ public class DeviceChangeListener : IDeviceChangeListener {
         if (device!!.getSerialNumber()!!.contains("?")) {
             return;
         }
-        log?.debug("changed:\t\t" + device?.pp())
+        log?.debug("changed:\t\t" + device.pp())
         devices?.update(BasicDBObject().append(
-                "serial", device?.getSerialNumber()
+                "serial", device.getSerialNumber()
         ), BasicDBObject().append(
-                "\$set", device?.toJSON()
+                "\$set", device.toJSON()
         ), true, false);
     }
 
@@ -56,11 +56,11 @@ public class DeviceChangeListener : IDeviceChangeListener {
         if (device!!.getSerialNumber()!!.contains("?")) {
             return;
         }
-        log?.debug("connected:\t\t" + device?.pp())
+        log?.debug("connected:\t\t" + device.pp())
         devices?.update(BasicDBObject().append(
-                "serial", device?.getSerialNumber()
+                "serial", device.getSerialNumber()
         ), BasicDBObject().append(
-                "\$set", device?.toJSON()
+                "\$set", device.toJSON()
         ), true, false);
     }
 }

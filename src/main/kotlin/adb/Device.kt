@@ -32,6 +32,10 @@ public class Device(device: IDevice) : IDevice by device {
     fun asJsonObject(): JsonObject {
         return JsonObject(this.toJSON().toJSONString())
     }
+
+//    fun shell(cmd: String) {
+//        this.executeShellCommand(cmd,)
+//    }
 }
 
 fun IDevice.log(): String {

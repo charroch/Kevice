@@ -28,6 +28,7 @@ public trait RouteHelper {
     fun post(route: String, routeHandler: (HttpServerRequest?) -> Unit) = routes.post(route, routeHandler)
     fun head(route: String, routeHandler: (HttpServerRequest?) -> Unit) = routes.head(route, routeHandler)
     fun trace(route: String, routeHandler: (HttpServerRequest?) -> Unit) = routes.trace(route, routeHandler)
+    fun delete(route: String, routeHandler: (HttpServerRequest?) -> Unit) = routes.delete(route, routeHandler)
 }
 
 public trait Async {

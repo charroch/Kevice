@@ -1,0 +1,5 @@
+<root>
+    <item name='org.vertx.java.platform.Container org.vertx.java.core.logging.Logger logger()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>

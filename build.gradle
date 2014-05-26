@@ -49,6 +49,8 @@ dependencies {
 
 
     testCompile 'org.spek:spek:0.1.121'
+    testCompile 'org.easytesting:fest-assert:1.4'
+
 }
 
 mainClassName = "org.vertx.java.platform.impl.cli.Starter"

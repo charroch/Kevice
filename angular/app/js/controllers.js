@@ -26,7 +26,7 @@ angular.module('myApp.controllers', [])
                                                                   size: size,
                                                                   resolve: {
                                                                     serial: function () {
-                                                                      return $scope.serial;
+                                                                      return 12;
                                                                     }
                                                                   }
                                                                 });

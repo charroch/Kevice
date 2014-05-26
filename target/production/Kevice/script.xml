@@ -1,0 +1,71 @@
+<modules>
+    <!-- Module script for production -->
+    <module name="Kevice" outputDir="/Users/charroch/github/Kevice/target/production/Kevice">
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/VerticleOfVerticles.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/adb/ADB2Websocket.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/adb/Device.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/adb/DeviceChangeListener.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/adb/LocalDeviceBridgeVerticle.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/future/Result.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/json/JsonBuilder.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/vertx/DeviceVerticle.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/vertx/RESTx.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/vertx/WithADB.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/vertx/WithDevice.kt"/>
+        <sources path="/Users/charroch/github/Kevice/src/main/kotlin/web/WebVerticle.kt"/>
+        <!-- Classpath -->
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/ant-javafx.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/dt.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/javafx-doclet.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/javafx-mx.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/jconsole.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/sa-jdi.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/lib/tools.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/charsets.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/deploy.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/htmlconverter.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/javaws.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jce.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jfr.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jfxrt.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/JObjC.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/jsse.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/management-agent.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/plugin.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/resources.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/rt.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/dnsns.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/localedata.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunec.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunjce_provider.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/sunpkcs11.jar"/>
+        <classpath path="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents/Home/jre/lib/ext/zipfs.jar"/>
+        <!-- Output directory, commented out -->
+        <!-- 
+            <classpath path="/Users/charroch/github/Kevice/target/production/Kevice"/>
+        -->
+        <classpath path="/Android/sdk/tools/lib/ddmlib.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-stdlib/0.7.270/577e7f10e6b99c85fa9a7b35e4d93ec4215696f3/kotlin-stdlib-0.7.270.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/org.mongodb/mongo-java-driver/2.12.0-rc3/953df387a156304b3efc58ab59919e33ad1449c4/mongo-java-driver-2.12.0-rc3.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/com.googlecode.json-simple/json-simple/1.1/5e303a03d04e6788dddfa3655272580ae0fc13bb/json-simple-1.1.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-classic/1.1.1/19e1e2be2670b33c5dcc835550527028dddddcd1/logback-classic-1.1.1.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-core/2.1M5/797ba1b3a11d7b0ede648163121a9f376ddad6ed/vertx-core-2.1M5.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/io.vertx/vertx-platform/2.1M5/d6bffb6a70da4c70c3afc36b969786977c0e5745/vertx-platform-2.1M5.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/io.vertx/mod-mongo-persistor/2.1.0/41b7206896796662e684c380ac80c7fa1171918a/mod-mongo-persistor-2.1.0.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlin/kotlin-runtime/0.7.270/e241e606634f8812f9a94b831e71130a0b29f4c5/kotlin-runtime-0.7.270.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/ch.qos.logback/logback-core/1.1.1/6d9866eb3f38b66530d7b1d41526228df3e9d963/logback-core-1.1.1.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/org.slf4j/slf4j-api/1.7.6/562424e36df3d2327e8e9301a76027fca17d54ea/slf4j-api-1.7.6.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-core/2.2.2/d20be6a5ddd6f8cfd36ebf6dea329873a1c41f1b/jackson-core-2.2.2.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-annotations/2.2.2/285cb9c666f0f0f3dd8a1be04e1f457eb7b15113/jackson-annotations-2.2.2.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/com.fasterxml.jackson.core/jackson-databind/2.2.2/3c8f6018eaa72d43b261181e801e6f8676c16ef6/jackson-databind-2.2.2.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/log4j/log4j/1.2.16/7999a63bfccbc7c247a9aea10d83d4272bd492c6/log4j-1.2.16.jar"/>
+        <classpath path="/Users/charroch/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.0.14.Final/d59f464000413051914494663213a1b7ed6e2341/netty-all-4.0.14.Final.jar"/>
+        <!-- Java Source Roots -->
+        <classpath path="/Users/charroch/github/Kevice/src/main/java"/>
+        <classpath path="/Users/charroch/github/Kevice/src/main/kotlin"/>
+        <!-- External annotations -->
+        <externalAnnotations path= "/Applications/IntelliJ IDEA 13 CE EAP.app/plugins/android/lib/androidAnnotations.jar"/>
+        <externalAnnotations path= "/Applications/IntelliJ IDEA 13 CE EAP.app/lib/jdkAnnotations.jar"/>
+        <externalAnnotations path= "/Users/charroch/Library/Application Support/IdeaIC13/Kotlin/kotlinc/lib/kotlin-jdk-annotations.jar"/>
+    </module>
+</modules>

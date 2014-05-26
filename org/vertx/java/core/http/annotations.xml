@@ -1,0 +1,8 @@
+<root>
+    <item name='org.vertx.java.core.http.HttpServerRequest org.vertx.java.core.http.HttpServerResponse response()'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+    <item name='org.vertx.java.core.http.HttpServerResponse'>
+        <annotation name='org.jetbrains.annotations.NotNull'/>
+    </item>
+</root>
