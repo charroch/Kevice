@@ -2,7 +2,7 @@
 
 /* Controllers */
 
-angular.module('myApp.controllers', [])
+angular.module('myApp.controllers', ['logcat'])
   .controller('MyCtrl1', ['$scope', function($scope) {
 
   }])
@@ -43,9 +43,9 @@ angular.module('myApp.controllers', [])
 // Please note that $modalInstance represents a modal window (instance) dependency.
 // It is not the same as the $modal service used above.
 
-var ModalInstanceCtrl = function ($scope, $modalInstance, items) {
+var ModalInstanceCtrl = function ($scope, $modalInstance) {
 
-  $scope.items = items;
+  $scope.items = ["1", "2"];
   $scope.selected = {
     item: $scope.items[0]
   };
