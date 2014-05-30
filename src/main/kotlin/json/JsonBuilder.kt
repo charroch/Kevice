@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.node
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.vertx.java.core.buffer.Buffer
+import org.vertx.java.core.json.JsonObject
 
 trait Value {
     public fun render(rootNode: ObjectNode)
@@ -26,7 +27,7 @@ public class JsObject(val obj: ObjectNode) : Value {
 
     override public fun render(rootNode: node.ObjectNode) {
         if (rootNode.isContainerNode()) {
-            rootNode.putAll(obj as ObjectNode)
+            rootNode.putAll(obj)
         }
     }
 
@@ -59,13 +60,16 @@ class JSON {
         a.render(root)
     }
 
-
     override fun toString(): String {
         return root.toString()
     }
 
     fun json(): JsonNode {
         return root;
+    }
+
+    fun to(): JsonObject {
+        return JsonObject()
     }
 }
 

@@ -1,52 +1,48 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,700,500italic,900,700italic,900italic);
-
-* {
-    font-family: 'Roboto', sans-serif;
+ * {
+    font-family:'Roboto', sans-serif;
 }
-
 body {
- background: rgba(240, 235, 235, 0.41);
+    background: rgba(240, 235, 235, 0.41);
 }
-
 .menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+    list-style: none;
+    border-bottom: 0.1em solid black;
+    margin-bottom: 2em;
+    padding: 0 0 0.5em;
 }
-
 .menu:before {
-  content: "[";
+    content:"[";
 }
-
 .menu:after {
-  content: "]";
+    content:"]";
 }
-
 .menu > li {
-  display: inline;
+    display: inline;
 }
-
 .menu > li:before {
-  content: "|";
-  padding-right: 0.3em;
+    content:"|";
+    padding-right: 0.3em;
 }
-
 .menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
+    content:"";
+    padding: 0;
 }
-
 .device_grid {
-  clear: both;
+    clear: both;
 }
-
 ul.devices {
-  list-style-type: none;
+    list-style-type: none;
 }
-
 li.devices {
-  float: left;
-  width: 25em;
-  margin: 0.2em;
+    float: left;
+    width: 25em;
+    margin: 0.2em;
+}
+.terminal {
+    border: #000 solid 5px;
+    font-family:"DejaVu Sans Mono", "Liberation Mono", monospace;
+    font-size: 11px;
+    color: #f0f0f0;
+    background: #000;
 }

@@ -1,0 +1,24 @@
+<table ng-controller="DeviceController" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Manufacturer</th>
+            <th>Model</th>
+            <th>serial</th>
+            <th>state</th>
+            <th>manufacturer</th>
+            <th>sdk</th>
+            <th>release</th>
+        </tr>
+    </thead>
+    <tr class="active" ng-controller="LogCatController" ng-click="open(device.serial)" ng-repeat="device in devices">
+        <td>{{device.properties.ro.product.manufacturer}}</td>
+        <td>
+            <strong>{{device.properties.ro.product.model}}</strong>
+        </td>
+        <td>{{device.serial}}</td>
+        <td>{{device.state}}</td>
+        <td>{{device.properties.ro.product.manufacturer}}</td>
+        <td>{{device.properties.ro.build.version.sdk}}</td>
+        <td>{{device.properties.ro.build.version.release}}</td>
+    </tr>
+</table>

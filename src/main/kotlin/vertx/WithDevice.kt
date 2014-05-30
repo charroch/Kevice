@@ -31,7 +31,7 @@ public trait WithDevice : WithADB, RESTx, RouteHelper {
                 when (t) {
                     is JSON -> req.response()?.headers()?.add("Content-Type", "application/json")
                 }
-                req.response()?.putHeader("Content-length" as String, Integer.toString(t.toString().length))
+                req.response()?.putHeader("Content-length", Integer.toString(t.toString().length))
                 req.response()?.write(t.toString())?.end()
 
             } catch(e: IllegalArgumentException) {

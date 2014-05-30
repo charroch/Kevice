@@ -24,7 +24,6 @@ class JsonBuilderSpec : Spek() {
         given("a simple builder") {
             on("Mapping a key to a value", {
                 val j = json {
-
                     obj {
                         "k" to "v"
                     }

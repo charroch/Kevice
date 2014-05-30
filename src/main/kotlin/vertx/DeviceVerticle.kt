@@ -14,6 +14,9 @@ import org.vertx.java.platform.Container
 import kotlin.properties.Delegates
 import org.vertx.java.core.Vertx
 import org.vertx.java.core.logging.Logger
+import org.vertx.java.core.streams.Pump
+import com.android.ddmlib.log.LogReceiver
+import adb.LogStream
 
 public class DeviceVerticle : RESTx(), WithDevice {
     {
@@ -47,7 +50,7 @@ public class DeviceVerticle : RESTx(), WithDevice {
                         }
                     }
                     request!!.response()?.headers()?.set("Content-Type", "application/json");
-                    request!!.response()?.headers()?.set("Access-Control-Allow-Origin", "*");
+                    request.response()?.headers()?.set("Access-Control-Allow-Origin", "*");
                     request.response()?.end(devices.toString());
                 } else {
                     l.info("No reply was received before the 5 second timeout!")
@@ -56,7 +59,7 @@ public class DeviceVerticle : RESTx(), WithDevice {
         }
 
         put("/device/:serial") {(request, device) ->
-            request?.save(File("/tmp/" + device.getSerialNumber() + ".apk")) {
+            request.save(File("/tmp/" + device.getSerialNumber() + ".apk")) {
                 when(it) {
                     is Success<*> -> {
                         val install = device.install(it.r as File)
@@ -88,9 +91,12 @@ public class DeviceVerticle : RESTx(), WithDevice {
         }
 
         post("/device/:serial/shell") {(request, device) ->
+            request.response()?.headers()?.set("Access-Control-Allow-Origin", "*");
             request.bodyHandler {
                 val cmd = JSON.JSON.mapper.readTree(it.toString())?.get("command") as TextNode
                 device.executeShellCommand(cmd.textValue(), ServerSentEventOutput(request.response()!!), 10, TimeUnit.SECONDS)
+
+                //device.runEventLogService(LogReceiver(LogStream()))
             }
         }
 
@@ -100,6 +106,8 @@ public class DeviceVerticle : RESTx(), WithDevice {
     val c: Container by Delegates.lazy { getContainer()!! }
     val v: Vertx by Delegates.lazy { getVertx()!! }
     val l: Logger by Delegates.lazy { c.logger()!! }
+
+
 
     class ServerSentEventOutput(val response: HttpServerResponse) : IShellOutputReceiver {
 
@@ -129,6 +137,26 @@ public class DeviceVerticle : RESTx(), WithDevice {
         routes.noMatch {
             it?.response()?.sendFile("web/" + java.io.File(it?.path().toString()));
         }
-        vertx?.createHttpServer()?.requestHandler(routes)?.listen(8081, "localhost");
+        val httpServer = vertx?.createHttpServer()?.requestHandler(routes);
+
+        val sockJSServer = vertx!!.createSockJSServer(httpServer);
+        val config = json.json {
+            obj { "prefix" to "/echo" }
+        }.let { JsonObject(it.toString()) }
+
+
+        sockJSServer!!.installApp(config) { sock ->
+            Pump.createPump(sock, sock)!!.start();
+        }
+
+        devices().forEach { d ->
+            val stream = LogStream(d)
+            val l = LogReceiver(stream)
+            Thread(Runnable() {
+               // d.runEventLogService(l)
+            }).start()
+        }
+
+        httpServer?.listen(8081, "localhost")
     }
 }
