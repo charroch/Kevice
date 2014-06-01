@@ -20,40 +20,35 @@ app.directive('console', function() {
     return {
         restrict: 'E',
         template: '<div></div>',
-        scope: {
-            ngSize: '@'
-        },
         controller: ['$scope', '$http',
             function($scope, $http) {
-                console.log("helloee world " + $scope.serial)
-                $scope.getTemp = function(city) {
-
-
-                }
+                $scope.getTemp = function(city) {}
             }
         ],
         link: function(scope, iElement, iAttrs, ctrl) {
-          
-            sock.onopen = function() {
-                console.log('open');
-                sock.send("hello world");
-            };
-
-            var term = new Terminal({
-                screenKeys: true
+            var term = $(iElement).terminal(function(command, term) {
+                if (command !== '') {
+                    sock.send(command)
+                }
+            }, {
+                greetings: 'device',
+                name: 'js_demo',
+                height: 200,
+                width: 450,
+                prompt: '> '
             });
 
-            term.open(iElement.children()[0]);
-            term.write('\x1b[31mWelcome to term.js!\x1b[m\r\n');
-            scope.term = term;
+            sock.onopen = function() {
+                term.echo(String("connection established"));
+            };
 
             sock.onmessage = function(e) {
-                scope.term.write(e.data);
+                console.log(e.data)
+                term.echo(String("received:" + e.data));
             };
 
             sock.onclose = function() {
-                console.log('close');
-                // term.destroy();
+                term.echo(String("connection closed"));
             };
 
         }

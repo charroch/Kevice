@@ -146,7 +146,11 @@ public class DeviceVerticle : RESTx(), WithDevice {
 
 
         sockJSServer!!.installApp(config) { sock ->
-            Pump.createPump(sock, sock)!!.start();
+            //devices().first.executeShellCommand()
+            sock!!.dataHandler { b->
+               l.info("Received: "+b.toString())
+            }
+            //Pump.createPump(sock, sock)!!.start();
         }
 
         devices().forEach { d ->
